@@ -1,6 +1,8 @@
+import { useState } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PostCard from "@/components/PostCard";
+import PostViewer from "@/components/PostViewer";
 import plant1 from "@/assets/plant1.jpg";
 import plant2 from "@/assets/plant2.jpg";
 import plant3 from "@/assets/plant3.jpg";
@@ -14,40 +16,75 @@ const mockPosts = [
     image: plant1,
     username: "greenthumb_sara",
     description: "My monstera is thriving! 🌿",
+    likes: 124,
+    comments: [
+      { id: 1, username: "plant_lover", text: "Beautiful! How do you keep it so healthy?" },
+      { id: 2, username: "garden_guru", text: "Stunning monstera! 🌿" },
+      { id: 3, username: "leafy_life", text: "Goals! Mine is still so small 😅" },
+    ],
   },
   {
     id: 2,
     image: plant2,
     username: "plantlover_mike",
     description: "New calathea just arrived. Isn't she gorgeous?",
+    likes: 89,
+    comments: [
+      { id: 1, username: "botanical_dreams", text: "Love the patterns on those leaves!" },
+      { id: 2, username: "tropicalplants", text: "Calatheas are the best 💚" },
+    ],
   },
   {
     id: 3,
     image: plant3,
     username: "succulentqueen",
     description: "My succulent collection keeps growing 🌵",
+    likes: 203,
+    comments: [
+      { id: 1, username: "desert_bloom", text: "Your collection is amazing!" },
+      { id: 2, username: "cactus_carl", text: "I need all of these 😍" },
+      { id: 3, username: "sunny_plants", text: "Where did you get that pink one?" },
+    ],
   },
   {
     id: 4,
     image: plant4,
     username: "urban_jungle",
     description: "Pothos vines are getting so long!",
+    likes: 156,
+    comments: [
+      { id: 1, username: "vine_vibes", text: "Time to propagate! 🌱" },
+      { id: 2, username: "greenthumb_sara", text: "So lush and healthy!" },
+    ],
   },
   {
     id: 5,
     image: plant5,
     username: "botanical_dreams",
     description: "Fiddle leaf fig finally got a new leaf 💚",
+    likes: 178,
+    comments: [
+      { id: 1, username: "fig_fanatic", text: "Congrats! New growth is always exciting!" },
+      { id: 2, username: "plant_parent_jen", text: "Mine never grows 😭" },
+      { id: 3, username: "leafy_life", text: "What's your secret?" },
+    ],
   },
   {
     id: 6,
     image: plant6,
     username: "plant_parent_jen",
     description: "Snake plant: the ultimate low-maintenance friend",
+    likes: 92,
+    comments: [
+      { id: 1, username: "easy_greens", text: "Perfect for beginners!" },
+      { id: 2, username: "urban_jungle", text: "Can't kill these if you tried 😂" },
+    ],
   },
 ];
 
 const Index = () => {
+  const [selectedPost, setSelectedPost] = useState<typeof mockPosts[0] | null>(null);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -68,10 +105,17 @@ const Index = () => {
               image={post.image}
               username={post.username}
               description={post.description}
+              onClick={() => setSelectedPost(post)}
             />
           ))}
         </div>
       </main>
+      
+      <PostViewer
+        post={selectedPost}
+        open={!!selectedPost}
+        onClose={() => setSelectedPost(null)}
+      />
     </div>
   );
 };
