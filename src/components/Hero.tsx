@@ -5,16 +5,16 @@ const Hero = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-lilac via-background to-peach py-16 md:py-24">
       {/* Decorative elements */}
-      <div className="absolute left-10 top-10 animate-pulse">
+      <div className="absolute left-10 top-10 animate-pulse" style={{ animationDelay: '0ms' }}>
         <Leaf className="h-8 w-8 rotate-12 text-tea-green opacity-40" />
       </div>
-      <div className="absolute right-16 top-20 animate-pulse delay-300">
+      <div className="absolute right-16 top-20 animate-pulse" style={{ animationDelay: '300ms' }}>
         <Sparkles className="h-6 w-6 text-grape opacity-30" />
       </div>
-      <div className="absolute bottom-10 left-1/4 animate-pulse delay-500">
+      <div className="absolute bottom-10 left-1/4 animate-pulse" style={{ animationDelay: '500ms' }}>
         <Sprout className="h-10 w-10 -rotate-12 text-secondary opacity-30" />
       </div>
-      <div className="absolute bottom-16 right-1/3 animate-pulse delay-700">
+      <div className="absolute bottom-16 right-1/3 animate-pulse" style={{ animationDelay: '700ms' }}>
         <Leaf className="h-7 w-7 rotate-45 text-primary opacity-25" />
       </div>
 
