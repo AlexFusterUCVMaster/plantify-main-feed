@@ -14,6 +14,7 @@ const mockPosts = [
   {
     id: 1,
     image: plant1,
+    plantName: "Monstera Deliciosa",
     username: "greenthumb_sara",
     description: "My monstera is thriving! 🌿",
     likes: 124,
@@ -22,10 +23,15 @@ const mockPosts = [
       { id: 2, username: "garden_guru", text: "Stunning monstera! 🌿" },
       { id: 3, username: "leafy_life", text: "Goals! Mine is still so small 😅" },
     ],
+    lightRequirements: "Bright indirect light",
+    wateringFrequency: "Once a week",
+    difficulty: "Easy",
+    careTip: "Wipe the leaves monthly to help them breathe and absorb more light!",
   },
   {
     id: 2,
     image: plant2,
+    plantName: "Calathea Orbifolia",
     username: "plantlover_mike",
     description: "New calathea just arrived. Isn't she gorgeous?",
     likes: 89,
@@ -33,10 +39,15 @@ const mockPosts = [
       { id: 1, username: "botanical_dreams", text: "Love the patterns on those leaves!" },
       { id: 2, username: "tropicalplants", text: "Calatheas are the best 💚" },
     ],
+    lightRequirements: "Medium to bright indirect light",
+    wateringFrequency: "2-3 times per week",
+    difficulty: "Moderate",
+    careTip: "Loves humidity! Mist regularly or use a pebble tray to keep it happy.",
   },
   {
     id: 3,
     image: plant3,
+    plantName: "Mixed Succulent Garden",
     username: "succulentqueen",
     description: "My succulent collection keeps growing 🌵",
     likes: 203,
@@ -45,10 +56,15 @@ const mockPosts = [
       { id: 2, username: "cactus_carl", text: "I need all of these 😍" },
       { id: 3, username: "sunny_plants", text: "Where did you get that pink one?" },
     ],
+    lightRequirements: "Bright direct light",
+    wateringFrequency: "Every 2-3 weeks",
+    difficulty: "Easy",
+    careTip: "Let the soil dry completely between waterings - they love it dry!",
   },
   {
     id: 4,
     image: plant4,
+    plantName: "Golden Pothos",
     username: "urban_jungle",
     description: "Pothos vines are getting so long!",
     likes: 156,
@@ -56,10 +72,15 @@ const mockPosts = [
       { id: 1, username: "vine_vibes", text: "Time to propagate! 🌱" },
       { id: 2, username: "greenthumb_sara", text: "So lush and healthy!" },
     ],
+    lightRequirements: "Low to bright indirect light",
+    wateringFrequency: "Once a week",
+    difficulty: "Very Easy",
+    careTip: "Perfect for beginners! Trim and propagate in water to create new plants.",
   },
   {
     id: 5,
     image: plant5,
+    plantName: "Fiddle Leaf Fig",
     username: "botanical_dreams",
     description: "Fiddle leaf fig finally got a new leaf 💚",
     likes: 178,
@@ -68,10 +89,15 @@ const mockPosts = [
       { id: 2, username: "plant_parent_jen", text: "Mine never grows 😭" },
       { id: 3, username: "leafy_life", text: "What's your secret?" },
     ],
+    lightRequirements: "Bright indirect light",
+    wateringFrequency: "Once a week",
+    difficulty: "Moderate to Hard",
+    careTip: "Keep it in one spot and avoid moving it around - they love stability!",
   },
   {
     id: 6,
     image: plant6,
+    plantName: "Snake Plant",
     username: "plant_parent_jen",
     description: "Snake plant: the ultimate low-maintenance friend",
     likes: 92,
@@ -79,6 +105,10 @@ const mockPosts = [
       { id: 1, username: "easy_greens", text: "Perfect for beginners!" },
       { id: 2, username: "urban_jungle", text: "Can't kill these if you tried 😂" },
     ],
+    lightRequirements: "Low to bright indirect light",
+    wateringFrequency: "Every 2-3 weeks",
+    difficulty: "Very Easy",
+    careTip: "The ultimate beginner plant - it thrives on neglect!",
   },
 ];
 
@@ -102,9 +132,7 @@ const Index = () => {
           {mockPosts.map((post) => (
             <PostCard
               key={post.id}
-              image={post.image}
-              username={post.username}
-              description={post.description}
+              post={post}
               onClick={() => setSelectedPost(post)}
             />
           ))}
