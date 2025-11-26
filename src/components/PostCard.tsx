@@ -8,13 +8,13 @@ interface PostCardProps {
 
 const PostCard = ({ image, username, description }: PostCardProps) => {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg">
+    <Card className="mb-6 overflow-hidden break-inside-avoid transition-all hover:shadow-lg">
       <CardContent className="p-0">
-        <div className="aspect-square overflow-hidden">
+        <div className="overflow-hidden">
           <img
             src={image}
             alt={`Plant by ${username}`}
-            className="h-full w-full object-cover transition-transform hover:scale-105"
+            className="w-full object-cover transition-transform hover:scale-105"
           />
         </div>
         <div className="p-4">
