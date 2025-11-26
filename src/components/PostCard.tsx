@@ -5,9 +5,10 @@ interface PostCardProps {
   image: string;
   username: string;
   description?: string;
+  onClick?: () => void;
 }
 
-const PostCard = ({ image, username, description }: PostCardProps) => {
+const PostCard = ({ image, username, description, onClick }: PostCardProps) => {
   // Random pastel border colors for polaroid effect
   const borderColors = [
     "border-t-lilac",
@@ -20,7 +21,8 @@ const PostCard = ({ image, username, description }: PostCardProps) => {
 
   return (
     <Card
-      className={`group mb-6 overflow-hidden break-inside-avoid border-t-4 bg-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 ${randomBorder}`}
+      onClick={onClick}
+      className={`group mb-6 overflow-hidden break-inside-avoid border-t-4 bg-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 cursor-pointer ${randomBorder}`}
     >
       <CardContent className="p-0">
         <div className="relative p-3 pb-0">
