@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 280 40% 98%;
     --foreground: 240 10% 15%;
 
     --card: 0 0% 100%;
@@ -17,19 +17,25 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 15%;
 
-    /* Lavender primary color */
+    /* Soft lavender primary */
     --primary: 270 60% 70%;
     --primary-foreground: 0 0% 100%;
 
-    /* Subtle green accent */
-    --secondary: 140 30% 65%;
+    /* Tea green accent */
+    --secondary: 140 35% 70%;
     --secondary-foreground: 240 10% 15%;
 
-    --muted: 270 20% 96%;
+    --muted: 270 25% 94%;
     --muted-foreground: 240 5% 50%;
 
     --accent: 270 50% 95%;
     --accent-foreground: 270 60% 40%;
+
+    /* Pastel palette additions */
+    --lilac: 280 50% 85%;
+    --peach: 20 80% 88%;
+    --tea-green: 140 35% 70%;
+    --grape: 280 60% 60%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
@@ -38,7 +44,7 @@ All colors MUST be HSL.
     --input: 270 20% 90%;
     --ring: 270 60% 70%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -78,6 +84,12 @@ All colors MUST be HSL.
 
     --accent: 270 40% 25%;
     --accent-foreground: 0 0% 98%;
+
+    /* Pastel palette - darker versions */
+    --lilac: 280 40% 60%;
+    --peach: 20 60% 65%;
+    --tea-green: 140 30% 50%;
+    --grape: 280 50% 50%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 98%;
