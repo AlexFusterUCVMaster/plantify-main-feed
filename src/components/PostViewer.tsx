@@ -2,6 +2,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogOverlay,
 } from "@/components/ui/dialog";
 import { Heart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,14 +34,14 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl p-0 gap-0 h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-6xl p-0 gap-0 h-[90vh] overflow-hidden bg-card/98 backdrop-blur-sm border border-border/30 shadow-2xl rounded-2xl">
         <DialogTitle className="sr-only">
           Post by @{post.username}
         </DialogTitle>
         
         <div className="grid grid-cols-1 md:grid-cols-2 h-full">
           {/* Left Column - Image */}
-          <div className="relative bg-muted flex items-center justify-center">
+          <div className="relative bg-muted/20 flex items-center justify-center overflow-hidden">
             <img
               src={post.image}
               alt={`Plant by ${post.username}`}
@@ -49,9 +50,9 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
           </div>
 
           {/* Right Column - Details */}
-          <div className="flex flex-col bg-card">
+          <div className="flex flex-col bg-card/80 backdrop-blur-sm">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border/40">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
                   <span className="text-sm font-semibold text-primary">
@@ -66,7 +67,7 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-muted/60"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -74,13 +75,13 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
 
             {/* Description */}
             {post.description && (
-              <div className="p-4 border-b border-border">
+              <div className="p-4 border-b border-border/40">
                 <p className="text-sm text-foreground">{post.description}</p>
               </div>
             )}
 
             {/* Likes */}
-            <div className="px-4 py-3 border-b border-border">
+            <div className="px-4 py-3 border-b border-border/40">
               <div className="flex items-center gap-2">
                 <Heart className="h-5 w-5 text-destructive fill-destructive" />
                 <span className="font-semibold text-foreground">
