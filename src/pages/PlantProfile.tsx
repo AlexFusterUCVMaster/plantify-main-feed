@@ -9,22 +9,20 @@ const PlantProfile = () => {
   const location = useLocation();
   const { post } = location.state || {};
 
-  if (!post) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="container mx-auto px-4 py-12 text-center">
-          <h1 className="font-display text-3xl font-bold text-foreground">Plant not found</h1>
-          <Link to="/">
-            <Button variant="outline" className="mt-4">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to feed
-            </Button>
-          </Link>
-        </main>
-      </div>
-    );
-  }
+  // Fallback plant data if no post is provided
+  const fallbackPlant = {
+    id: 0,
+    image: "https://images.unsplash.com/photo-1463320726281-696a485928c7?w=800&q=80",
+    plantName: "Monstera Deliciosa",
+    username: "plantify_community",
+    description: "A beautiful tropical plant perfect for any home",
+    lightRequirements: "Bright indirect light",
+    wateringFrequency: "Once a week",
+    difficulty: "Easy",
+    careTip: "Wipe the leaves monthly to help them breathe and absorb more light!",
+  };
+
+  const displayPost = post || fallbackPlant;
 
   const getDifficultyColor = (difficulty: string) => {
     if (difficulty.toLowerCase().includes("easy")) return "bg-tea-green text-foreground";
@@ -48,8 +46,8 @@ const PlantProfile = () => {
           {/* Left column - Image */}
           <div className="overflow-hidden rounded-xl shadow-lg">
             <img
-              src={post.image}
-              alt={post.plantName}
+              src={displayPost.image}
+              alt={displayPost.plantName}
               className="h-full w-full object-cover"
             />
           </div>
@@ -58,15 +56,15 @@ const PlantProfile = () => {
           <div className="space-y-6">
             <div>
               <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
-                {post.plantName}
+                {displayPost.plantName}
               </h1>
               <p className="mt-2 text-lg text-muted-foreground">
-                Shared by @{post.username}
+                Shared by @{displayPost.username}
               </p>
             </div>
 
-            <Badge className={getDifficultyColor(post.difficulty)}>
-              {post.difficulty}
+            <Badge className={getDifficultyColor(displayPost.difficulty)}>
+              {displayPost.difficulty}
             </Badge>
 
             <div className="space-y-4">
@@ -77,7 +75,7 @@ const PlantProfile = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">Light Requirements</h3>
-                    <p className="text-sm text-muted-foreground">{post.lightRequirements}</p>
+                    <p className="text-sm text-muted-foreground">{displayPost.lightRequirements}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -89,7 +87,7 @@ const PlantProfile = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">Watering Frequency</h3>
-                    <p className="text-sm text-muted-foreground">{post.wateringFrequency}</p>
+                    <p className="text-sm text-muted-foreground">{displayPost.wateringFrequency}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -101,7 +99,7 @@ const PlantProfile = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">Difficulty Level</h3>
-                    <p className="text-sm text-muted-foreground">{post.difficulty}</p>
+                    <p className="text-sm text-muted-foreground">{displayPost.difficulty}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -113,7 +111,7 @@ const PlantProfile = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">Care Tip</h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{post.careTip}</p>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{displayPost.careTip}</p>
                   </div>
                 </CardContent>
               </Card>
