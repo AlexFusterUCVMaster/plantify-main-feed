@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 import PostCard from "@/components/PostCard";
 import plant1 from "@/assets/plant1.jpg";
 import plant2 from "@/assets/plant2.jpg";
@@ -50,7 +51,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-4 py-8 md:px-6 lg:px-8">
+      <Hero />
+      <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            Latest from our community
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            Discover beautiful plants shared by fellow plant lovers
+          </p>
+        </div>
         <div className="columns-1 gap-6 md:columns-2 lg:columns-3">
           {mockPosts.map((post) => (
             <PostCard
