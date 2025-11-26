@@ -23,12 +23,14 @@ const PostCard = ({ image, username, description }: PostCardProps) => {
       className={`group mb-6 overflow-hidden break-inside-avoid border-t-4 bg-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 ${randomBorder}`}
     >
       <CardContent className="p-0">
-        <div className="relative overflow-hidden p-3 pb-0">
-          <img
-            src={image}
-            alt={`Plant by ${username}`}
-            className="w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
-          />
+        <div className="relative p-3 pb-0">
+          <div className="overflow-hidden rounded-lg">
+            <img
+              src={image}
+              alt={`Plant by ${username}`}
+              className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
           {/* Decorative sparkle on hover */}
           <div className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
             <Sparkles className="h-5 w-5 animate-pulse text-white drop-shadow-lg" />
