@@ -93,6 +93,11 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      animationDelay: {
+        '300': '300ms',
+        '500': '500ms',
+        '700': '700ms',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
