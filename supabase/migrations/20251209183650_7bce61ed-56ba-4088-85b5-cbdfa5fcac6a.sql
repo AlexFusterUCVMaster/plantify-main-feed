@@ -1,0 +1,7 @@
+-- Drop the existing policy
+DROP POLICY IF EXISTS "Profiles are viewable by everyone" ON public.profiles;
+
+-- Create new policy requiring authentication
+CREATE POLICY "Profiles are viewable by authenticated users"
+ON public.profiles FOR SELECT
+USING (auth.role() = 'authenticated');
