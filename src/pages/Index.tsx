@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import PostCard from "@/components/PostCard";
 import PostViewer from "@/components/PostViewer";
+import CreatePostDialog from "@/components/CreatePostDialog";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import plant1 from "@/assets/plant1.jpg";
 import plant2 from "@/assets/plant2.jpg";
 import plant3 from "@/assets/plant3.jpg";
@@ -10,7 +13,21 @@ import plant4 from "@/assets/plant4.jpg";
 import plant5 from "@/assets/plant5.jpg";
 import plant6 from "@/assets/plant6.jpg";
 
-const mockPosts = [
+interface Post {
+  id: string | number;
+  image: string;
+  plantName: string;
+  username: string;
+  description: string;
+  likes: number;
+  comments: { id: number; username: string; text: string }[];
+  lightRequirements: string;
+  wateringFrequency: string;
+  difficulty: string;
+  careTip: string;
+}
+
+const mockPosts: Post[] = [
   {
     id: 1,
     image: plant1,
@@ -113,23 +130,66 @@ const mockPosts = [
 ];
 
 const Index = () => {
-  const [selectedPost, setSelectedPost] = useState<typeof mockPosts[0] | null>(null);
+  const { user } = useAuth();
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [dbPosts, setDbPosts] = useState<Post[]>([]);
+
+  const fetchPosts = async () => {
+    const { data, error } = await supabase
+      .from("posts")
+      .select(`
+        id,
+        image_url,
+        plant_name,
+        caption,
+        user_id,
+        created_at,
+        profiles!posts_user_id_fkey (username)
+      `)
+      .order("created_at", { ascending: false });
+
+    if (!error && data) {
+      const formattedPosts: Post[] = data.map((post: any) => ({
+        id: post.id,
+        image: post.image_url,
+        plantName: post.plant_name || "Planta misteriosa",
+        username: post.profiles?.username || "Anónimo",
+        description: post.caption || "",
+        likes: Math.floor(Math.random() * 100),
+        comments: [],
+        lightRequirements: "Luz indirecta brillante",
+        wateringFrequency: "Una vez por semana",
+        difficulty: "Moderada",
+        careTip: "¡Cuida bien de tu planta!",
+      }));
+      setDbPosts(formattedPosts);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const allPosts = [...dbPosts, ...mockPosts];
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
       <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-            Latest from our community
-          </h2>
-          <p className="mt-2 text-muted-foreground">
-            Discover beautiful plants shared by fellow plant lovers
-          </p>
+        <div className="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="text-center sm:text-left">
+            <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+              Latest from our community
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Discover beautiful plants shared by fellow plant lovers
+            </p>
+          </div>
+          {user && <CreatePostDialog onPostCreated={fetchPosts} />}
         </div>
         <div className="columns-1 gap-6 md:columns-2 lg:columns-3">
-          {mockPosts.map((post) => (
+          {allPosts.map((post) => (
             <PostCard
               key={post.id}
               post={post}

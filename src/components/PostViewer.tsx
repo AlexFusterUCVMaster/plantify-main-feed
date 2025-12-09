@@ -15,7 +15,7 @@ interface Comment {
 }
 
 interface Post {
-  id: number;
+  id: string | number;
   image: string;
   username: string;
   description?: string;
