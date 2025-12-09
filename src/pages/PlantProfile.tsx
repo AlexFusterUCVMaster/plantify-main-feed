@@ -12,7 +12,7 @@ const PlantProfile = () => {
   // Fallback plant data if no post is provided
   const fallbackPlant = {
     id: 0,
-    image: "https://images.unsplash.com/photo-1463320726281-696a485928c7?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&q=80",
     plantName: "Monstera Deliciosa",
     username: "plantify_community",
     description: "A beautiful tropical plant perfect for any home",
