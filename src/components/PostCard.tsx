@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 interface PostCardProps {
   post: {
-    id: number;
+    id: string | number;
     image: string;
     plantName: string;
     username: string;
