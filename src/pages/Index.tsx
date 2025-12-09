@@ -144,7 +144,7 @@ const Index = () => {
         caption,
         user_id,
         created_at,
-        profiles!posts_user_id_fkey (username)
+        profiles (username)
       `)
       .order("created_at", { ascending: false });
 
@@ -168,6 +168,26 @@ const Index = () => {
 
   useEffect(() => {
     fetchPosts();
+
+    // Subscribe to realtime updates
+    const channel = supabase
+      .channel("posts-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "posts",
+        },
+        () => {
+          fetchPosts();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const allPosts = [...dbPosts, ...mockPosts];
