@@ -1,17 +1,22 @@
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogOverlay,
 } from "@/components/ui/dialog";
-import { Heart, X } from "lucide-react";
+import { Heart, X, Trash2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 interface Comment {
-  id: number;
+  id: string;
   username: string;
   text: string;
+  user_id: string;
 }
 
 interface Post {
@@ -30,6 +35,84 @@ interface PostViewerProps {
 }
 
 const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
+  const { user } = useAuth();
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const fetchComments = async () => {
+    if (!post || typeof post.id !== "string") {
+      setComments(post?.comments || []);
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("comments")
+      .select(`
+        id,
+        text,
+        user_id,
+        profiles (username)
+      `)
+      .eq("post_id", post.id)
+      .order("created_at", { ascending: true });
+
+    if (!error && data) {
+      const formattedComments: Comment[] = data.map((c: any) => ({
+        id: c.id,
+        text: c.text,
+        user_id: c.user_id,
+        username: c.profiles?.username || "Anónimo",
+      }));
+      setComments(formattedComments);
+    } else {
+      setComments(post?.comments || []);
+    }
+  };
+
+  useEffect(() => {
+    if (open && post) {
+      fetchComments();
+    }
+  }, [open, post?.id]);
+
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !user || !post || typeof post.id !== "string") {
+      if (!user) toast.error("Debes iniciar sesión para comentar");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.from("comments").insert({
+      post_id: post.id,
+      user_id: user.id,
+      text: newComment.trim(),
+    });
+
+    if (error) {
+      toast.error("Error al publicar comentario");
+    } else {
+      setNewComment("");
+      fetchComments();
+      toast.success("Comentario publicado");
+    }
+    setLoading(false);
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    const { error } = await supabase
+      .from("comments")
+      .delete()
+      .eq("id", commentId);
+
+    if (error) {
+      toast.error("Error al eliminar comentario");
+    } else {
+      fetchComments();
+      toast.success("Comentario eliminado");
+    }
+  };
+
   if (!post) return null;
 
   return (
@@ -93,9 +176,9 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
             {/* Comments */}
             <ScrollArea className="flex-1 p-4">
               <div className="space-y-4">
-                {post.comments.length > 0 ? (
-                  post.comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3">
+                {comments.length > 0 ? (
+                  comments.map((comment) => (
+                    <div key={comment.id} className="flex gap-3 group">
                       <div className="h-8 w-8 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0">
                         <span className="text-xs font-semibold text-secondary-foreground">
                           {comment.username.charAt(0).toUpperCase()}
@@ -111,15 +194,47 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
                           </span>
                         </p>
                       </div>
+                      {user && user.id === comment.user_id && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                          onClick={() => handleDeleteComment(comment.id)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      )}
                     </div>
                   ))
                 ) : (
                   <p className="text-sm text-muted-foreground text-center py-8">
-                    No comments yet
+                    No hay comentarios aún
                   </p>
                 )}
               </div>
             </ScrollArea>
+
+            {/* Add Comment */}
+            {user && typeof post.id === "string" && (
+              <div className="p-4 border-t border-border/40">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Escribe un comentario..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
+                    className="flex-1"
+                  />
+                  <Button
+                    size="icon"
+                    onClick={handleAddComment}
+                    disabled={loading || !newComment.trim()}
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </DialogContent>

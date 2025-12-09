@@ -13,6 +13,13 @@ import plant4 from "@/assets/plant4.jpg";
 import plant5 from "@/assets/plant5.jpg";
 import plant6 from "@/assets/plant6.jpg";
 
+interface Comment {
+  id: string;
+  username: string;
+  text: string;
+  user_id: string;
+}
+
 interface Post {
   id: string | number;
   image: string;
@@ -20,7 +27,7 @@ interface Post {
   username: string;
   description: string;
   likes: number;
-  comments: { id: number; username: string; text: string }[];
+  comments: Comment[];
   lightRequirements: string;
   wateringFrequency: string;
   difficulty: string;
@@ -35,11 +42,7 @@ const mockPosts: Post[] = [
     username: "greenthumb_sara",
     description: "My monstera is thriving! 🌿",
     likes: 124,
-    comments: [
-      { id: 1, username: "plant_lover", text: "Beautiful! How do you keep it so healthy?" },
-      { id: 2, username: "garden_guru", text: "Stunning monstera! 🌿" },
-      { id: 3, username: "leafy_life", text: "Goals! Mine is still so small 😅" },
-    ],
+    comments: [],
     lightRequirements: "Bright indirect light",
     wateringFrequency: "Once a week",
     difficulty: "Easy",
@@ -52,10 +55,7 @@ const mockPosts: Post[] = [
     username: "plantlover_mike",
     description: "New calathea just arrived. Isn't she gorgeous?",
     likes: 89,
-    comments: [
-      { id: 1, username: "botanical_dreams", text: "Love the patterns on those leaves!" },
-      { id: 2, username: "tropicalplants", text: "Calatheas are the best 💚" },
-    ],
+    comments: [],
     lightRequirements: "Medium to bright indirect light",
     wateringFrequency: "2-3 times per week",
     difficulty: "Moderate",
@@ -68,11 +68,7 @@ const mockPosts: Post[] = [
     username: "succulentqueen",
     description: "My succulent collection keeps growing 🌵",
     likes: 203,
-    comments: [
-      { id: 1, username: "desert_bloom", text: "Your collection is amazing!" },
-      { id: 2, username: "cactus_carl", text: "I need all of these 😍" },
-      { id: 3, username: "sunny_plants", text: "Where did you get that pink one?" },
-    ],
+    comments: [],
     lightRequirements: "Bright direct light",
     wateringFrequency: "Every 2-3 weeks",
     difficulty: "Easy",
@@ -85,10 +81,7 @@ const mockPosts: Post[] = [
     username: "urban_jungle",
     description: "Pothos vines are getting so long!",
     likes: 156,
-    comments: [
-      { id: 1, username: "vine_vibes", text: "Time to propagate! 🌱" },
-      { id: 2, username: "greenthumb_sara", text: "So lush and healthy!" },
-    ],
+    comments: [],
     lightRequirements: "Low to bright indirect light",
     wateringFrequency: "Once a week",
     difficulty: "Very Easy",
@@ -101,11 +94,7 @@ const mockPosts: Post[] = [
     username: "botanical_dreams",
     description: "Fiddle leaf fig finally got a new leaf 💚",
     likes: 178,
-    comments: [
-      { id: 1, username: "fig_fanatic", text: "Congrats! New growth is always exciting!" },
-      { id: 2, username: "plant_parent_jen", text: "Mine never grows 😭" },
-      { id: 3, username: "leafy_life", text: "What's your secret?" },
-    ],
+    comments: [],
     lightRequirements: "Bright indirect light",
     wateringFrequency: "Once a week",
     difficulty: "Moderate to Hard",
@@ -118,10 +107,7 @@ const mockPosts: Post[] = [
     username: "plant_parent_jen",
     description: "Snake plant: the ultimate low-maintenance friend",
     likes: 92,
-    comments: [
-      { id: 1, username: "easy_greens", text: "Perfect for beginners!" },
-      { id: 2, username: "urban_jungle", text: "Can't kill these if you tried 😂" },
-    ],
+    comments: [],
     lightRequirements: "Low to bright indirect light",
     wateringFrequency: "Every 2-3 weeks",
     difficulty: "Very Easy",
