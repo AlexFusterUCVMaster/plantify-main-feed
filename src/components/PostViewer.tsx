@@ -40,9 +40,13 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const isDbPost = typeof post?.id === "string";
+
   const fetchComments = async () => {
-    if (!post || typeof post.id !== "string") {
-      setComments(post?.comments || []);
+    if (!post) return;
+    
+    if (!isDbPost) {
+      setComments(post.comments || []);
       return;
     }
 
@@ -54,7 +58,7 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
         user_id,
         profiles (username)
       `)
-      .eq("post_id", post.id)
+      .eq("post_id", post.id as string)
       .order("created_at", { ascending: true });
 
     if (!error && data) {
@@ -66,7 +70,7 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
       }));
       setComments(formattedComments);
     } else {
-      setComments(post?.comments || []);
+      setComments(post.comments || []);
     }
   };
 
@@ -77,40 +81,58 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
   }, [open, post?.id]);
 
   const handleAddComment = async () => {
-    if (!newComment.trim() || !user || !post || typeof post.id !== "string") {
+    if (!newComment.trim() || !user || !post) {
       if (!user) toast.error("Debes iniciar sesión para comentar");
       return;
     }
 
     setLoading(true);
-    const { error } = await supabase.from("comments").insert({
-      post_id: post.id,
-      user_id: user.id,
-      text: newComment.trim(),
-    });
+    
+    if (isDbPost) {
+      const { error } = await supabase.from("comments").insert({
+        post_id: post.id as string,
+        user_id: user.id,
+        text: newComment.trim(),
+      });
 
-    if (error) {
-      toast.error("Error al publicar comentario");
-    } else {
-      setNewComment("");
+      if (error) {
+        toast.error("Error al publicar comentario");
+        setLoading(false);
+        return;
+      }
       fetchComments();
-      toast.success("Comentario publicado");
+    } else {
+      // Para posts mock, añadir comentario localmente
+      const newLocalComment: Comment = {
+        id: crypto.randomUUID(),
+        text: newComment.trim(),
+        user_id: user.id,
+        username: user.email?.split("@")[0] || "Usuario",
+      };
+      setComments((prev) => [...prev, newLocalComment]);
     }
+    
+    setNewComment("");
+    toast.success("Comentario publicado");
     setLoading(false);
   };
 
   const handleDeleteComment = async (commentId: string) => {
-    const { error } = await supabase
-      .from("comments")
-      .delete()
-      .eq("id", commentId);
+    if (isDbPost) {
+      const { error } = await supabase
+        .from("comments")
+        .delete()
+        .eq("id", commentId);
 
-    if (error) {
-      toast.error("Error al eliminar comentario");
-    } else {
+      if (error) {
+        toast.error("Error al eliminar comentario");
+        return;
+      }
       fetchComments();
-      toast.success("Comentario eliminado");
+    } else {
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
     }
+    toast.success("Comentario eliminado");
   };
 
   if (!post) return null;
@@ -215,7 +237,7 @@ const PostViewer = ({ post, open, onClose }: PostViewerProps) => {
             </ScrollArea>
 
             {/* Add Comment */}
-            {user && typeof post.id === "string" && (
+            {user && (
               <div className="p-4 border-t border-border/40">
                 <div className="flex gap-2">
                   <Input
